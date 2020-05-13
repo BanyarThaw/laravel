@@ -8,8 +8,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-    	$name="Home Page";
-    	return view('home',compact('name'));
+    	$data = \App\Receipes::all();
+        
+        return view('home',compact('data'));
     }
     public function phpPage()
     {
