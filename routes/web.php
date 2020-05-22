@@ -11,6 +11,7 @@
 |
 */
 Route::resource('receipe','ReceipeController');
+Route::get('home','HomeController@index');
 //Route::get('/','ReceipeController@index');
 //Route::get('receipe','ReceipeController@index');
 //Route::get('receipe/create','ReceipeController@createReceipeForm');
@@ -49,3 +50,7 @@ Route::get('/js', function () {
     ]);
 });
 */
+Auth::routes();
+//Auth::routes();
+
+//Route::get('/home', 'HomeController@index')->name('home');

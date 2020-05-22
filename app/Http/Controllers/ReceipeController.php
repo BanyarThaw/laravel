@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Receipe;
+use App\Category;
 use Illuminate\Http\Request;
 
 class ReceipeController extends Controller
@@ -12,10 +13,15 @@ class ReceipeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        $data = \App\Receipes::all();
-        
+        $data = Receipe::where('author_id',auth()->id())->get();
+
         return view('home',compact('data'));
     }
 
@@ -26,7 +32,8 @@ class ReceipeController extends Controller
      */
     public function create()
     {
-        return view('create');
+        $category = Category::all();
+        return view('create',compact('category'));
     }
 
     /**
@@ -51,11 +58,7 @@ class ReceipeController extends Controller
 
         $receipe->save();
         */
-       Receipe::create([
-            'name'=>request()->name,
-            'ingredients'=>request()->ingredients,
-            'category'=>request()->category,
-        ]);
+       Receipe::create($validatedData + ['author_id'=>auth()->id()]);
 
         return redirect("receipe");
     }
@@ -68,6 +71,10 @@ class ReceipeController extends Controller
      */
     public function show(Receipe $receipe)
     {
+        //if($receipe->author_id != auth()->id()){
+          //  abort(404);
+        //}
+        $this->authorize('view',$receipe);
         return view('show',compact('receipe'));
     }
 
@@ -79,8 +86,11 @@ class ReceipeController extends Controller
      */
     public function edit($id)
     {   
+        $category =  Category::all();
+
         $receipe = Receipe::find($id);
-        return view('edit',compact('receipe'));
+        $this->authorize('view',$receipe);
+        return view('edit',compact('receipe','category'));
     }
 
     /**
@@ -99,7 +109,7 @@ class ReceipeController extends Controller
         ]);
         
         $receipe->update(request()->all());
-
+        $this->authorize('view',$receipe);
         return redirect("receipe");
     }
 
@@ -112,6 +122,7 @@ class ReceipeController extends Controller
     public function destroy(Receipe $receipe)
     {
         $receipe->delete();
+        $this->authorize('view',$receipe);
         return redirect("receipe");
     }
 }
