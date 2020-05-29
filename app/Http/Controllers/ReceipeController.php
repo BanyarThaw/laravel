@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Receipe;
+use App\test;
 use App\Category;
+use App\Http\Controllers\Mail;
 use Illuminate\Http\Request;
+use App\Receipe;
+use App\Mail\ReceipeStored;
 
 class ReceipeController extends Controller
 {
@@ -58,8 +60,11 @@ class ReceipeController extends Controller
 
         $receipe->save();
         */
-       Receipe::create($validatedData + ['author_id'=>auth()->id()]);
+       $receipe=Receipe::create($validatedData + ['author_id'=>auth()->id()]);
 
+    /*   session()->flash("message",'Receipe has created successfully!');
+       \Mail::to('banyarthaw2@gmail.com')->send(new ReceipeStored($receipe));
+    */
         return redirect("receipe");
     }
 
@@ -74,7 +79,7 @@ class ReceipeController extends Controller
         //if($receipe->author_id != auth()->id()){
           //  abort(404);
         //}
-        $this->authorize('view',$receipe);
+        //$this->authorize('view',$receipe);
         return view('show',compact('receipe'));
     }
 
@@ -89,7 +94,7 @@ class ReceipeController extends Controller
         $category =  Category::all();
 
         $receipe = Receipe::find($id);
-        $this->authorize('view',$receipe);
+        //$this->authorize('view',$receipe);
         return view('edit',compact('receipe','category'));
     }
 
@@ -109,7 +114,8 @@ class ReceipeController extends Controller
         ]);
         
         $receipe->update(request()->all());
-        $this->authorize('view',$receipe);
+        //$this->authorize('view',$receipe);
+        session()->flash("message",'Receipe has updated successfully!');
         return redirect("receipe");
     }
 
@@ -122,7 +128,8 @@ class ReceipeController extends Controller
     public function destroy(Receipe $receipe)
     {
         $receipe->delete();
-        $this->authorize('view',$receipe);
+        //$this->authorize('view',$receipe);
+        session()->flash("message",'Receipe has deleted successfully!');
         return redirect("receipe");
     }
 }

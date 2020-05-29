@@ -16,9 +16,9 @@ class ReceipePolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user,Receipe $receipe)
     {
-        //
+        return $receipe->author_id == $user->id;
     }
 
     /**
@@ -30,7 +30,7 @@ class ReceipePolicy
      */
     public function view(User $user, Receipe $receipe)
     {
-        return $receipe->author_id == $user->id;
+        //return $receipe->author_id == $user->id;
     }
 
     /**
@@ -41,7 +41,7 @@ class ReceipePolicy
      */
     public function create(User $user)
     {
-        //
+        //return $receipe->author_id == $user->id;
     }
 
     /**
@@ -51,9 +51,13 @@ class ReceipePolicy
      * @param  \App\Receipe  $receipe
      * @return mixed
      */
+    public function edit(User $user,Receipe $receipe)
+    {
+        //return $receipe->author_id==$user->id;
+    }
     public function update(User $user, Receipe $receipe)
     {
-        //
+        //return $receipe->author_id == $user->id;
     }
 
     /**
@@ -65,7 +69,7 @@ class ReceipePolicy
      */
     public function delete(User $user, Receipe $receipe)
     {
-        //
+        //return $receipe->author_id == $user->id;
     }
 
     /**
