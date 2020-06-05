@@ -19,7 +19,11 @@ Route::get('/',function(){
 
 
 Route::resource('receipe','ReceipeController');
+Route::resource('category','CategoryController');
+
 Route::get('home','HomeController@index');
+Route::get('/','PublicController@index');
+Route::get('detail/{id}','PublicController@show');
 //Route::get('/','ReceipeController@index');
 //Route::get('receipe','ReceipeController@index');
 //Route::get('receipe/create','ReceipeController@createReceipeForm');

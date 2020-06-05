@@ -1,11 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\help;
 use App\test;
 use App\Category;
 use App\Http\Controllers\Mail;
+use App\Events\ReceipeCreatedEvent;
 use Illuminate\Http\Request;
+//use Illuminate\Support\Facades\Mail;
 use App\Receipe;
+use App\User;
+use App\Notifications\ReceipeStoredNotification;
 use App\Mail\ReceipeStored;
 
 class ReceipeController extends Controller
@@ -22,8 +27,13 @@ class ReceipeController extends Controller
 
     public function index()
     {
-        $data = Receipe::where('author_id',auth()->id())->get();
+        //$user = User::find(2);
+        //$user->notify(new ReceipeStoredNotification());
+        //echo "sent notification";
+        //exit();
+       // $receipes = Receipe::where('author_id',auth()->id())->get();
 
+        $data = Receipe::paginate(5);
         return view('home',compact('data'));
     }
 
@@ -65,6 +75,8 @@ class ReceipeController extends Controller
     /*   session()->flash("message",'Receipe has created successfully!');
        \Mail::to('banyarthaw2@gmail.com')->send(new ReceipeStored($receipe));
     */
+       //event(new ReceipeCreatedEvent($receipe));
+
         return redirect("receipe");
     }
 
